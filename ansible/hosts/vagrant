@@ -1,0 +1,14 @@
+[vagrant]
+buildbot-vm
+slave1-vm
+slave2-vm
+
+[buildbot:children]
+vagrant
+
+[buildbot-master]
+buildbot-vm
+
+[buildbot-slaves]
+slave1-vm
+slave2-vm

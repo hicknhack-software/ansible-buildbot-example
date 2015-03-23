@@ -1,0 +1,5 @@
+---
+# development version from Github
+- src: "https://github.com/hicknhack-software/ansible-buildbot.git"
+  version: "develop"
+  name: "hicknhack-software.buildbot"

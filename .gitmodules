@@ -1,0 +1,4 @@
+[submodule "vagrant-ansible-remote"]
+	path = vagrant-ansible-remote
+	url = https://github.com/dresden-weekly/vagrant-ansible-remote.git
+	branch = develop
