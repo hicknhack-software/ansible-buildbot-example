@@ -29,16 +29,17 @@ Vagrant.configure('2') do |config|
 
   # n buildbot slaves
   (1..2).each do |n|
-  config.vm.define "slave#{n}-vm" do |slave1|
-    slave1.vm.hostname = "slave#{n}-vm"
+    config.vm.define "slave#{n}-vm" do |slave1|
+      slave1.vm.hostname = "slave#{n}-vm"
 
-    # disable shared folder
-    slave1.vm.synced_folder ".", "/vagrant", disabled: true
+      # disable shared folder
+      slave1.vm.synced_folder ".", "/vagrant", disabled: true
 
-    # make machine faster
-    slave1.vm.provider "virtualbox" do |v|
-      v.memory = 1024
-      v.cpus = 2
+      # make machine faster
+      slave1.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 2
+      end
     end
   end
 

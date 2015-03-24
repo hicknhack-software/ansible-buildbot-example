@@ -3,9 +3,6 @@ buildbot-vm
 slave1-vm
 slave2-vm
 
-[vagrant:vars]
-ansible_connection=local
-
 [buildbot:children]
 vagrant
 

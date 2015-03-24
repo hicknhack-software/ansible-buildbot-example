@@ -1,3 +1,17 @@
 - hosts: buildbot-master
+  sudo: yes
+
+  roles:
+  - hicknhack-software.buildbot/master/nine
+
+  - hicknhack-software.buildbot/master/inplace-config
+
+  - role: hicknhack-software.buildbot/project/add
+    project_name: 'Twofold-Qt'
+    project_repo_url: 'https://github.com/hicknhack-software/Twofold-Qt.git'
 
 - hosts: buildbot-slaves
+  sudo: yes
+
+  roles:
+  - hicknhack-software.buildbot/slave
