@@ -1,7 +1,9 @@
 - hosts: buildbot-master
+  sudo: yes
 
   roles:
-  - hicknhack-software.buildbot/master/nine/create
+  - role: hicknhack-software.buildbot/master/nine/create
+    buildbot_master_www_port: 8083
 
   - hicknhack-software.buildbot/master/inplace-config
 
