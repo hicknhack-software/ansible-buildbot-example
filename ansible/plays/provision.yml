@@ -16,8 +16,15 @@
   sudo: yes
 
   roles:
-  - hicknhack-software.buildbot/slave
+  - hicknhack-software.buildbot/slave/create
+  - example-setups/qt530
+  - example-setups/gcc490
+  - example-setups/qt530_gcc490
 
 - hosts: buildbot-master
   roles:
     - hicknhack-software.buildbot/master/nine/start
+
+- hosts: buildbot-slaves
+  roles:
+    - hicknhack-software.buildbot/slave/start

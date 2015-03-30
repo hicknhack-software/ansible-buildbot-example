@@ -1,0 +1,14 @@
+- name: Folder
+  file:
+    path: '{{ buildbot_slave_prepare_dir }}'
+    state: directory
+    owner: '{{ buildbot_slave_user }}'
+    group: '{{ buildbot_slave_user }}'
+
+- name: Copy Prepare Script
+  template:
+    src: 'qt530_gcc490.sh.j2'
+    dest: "{{ buildbot_slave_prepare_dir }}/qt530_gcc490.sh"
+    owner: '{{ buildbot_slave_user }}'
+    group: '{{ buildbot_slave_user }}'
+    mode: 'u+x'   

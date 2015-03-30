@@ -1,0 +1,26 @@
+- name: Add PPA
+  apt_repository:
+    repo: 'ppa:ubuntu-toolchain-r/test'
+
+- name: Install APT packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+    cache_valid_time: 86400
+  with_items: gcc490_packages
+
+- name: Folder
+  file:
+    path: '{{ buildbot_slave_prepare_dir }}'
+    state: directory
+    owner: '{{ buildbot_slave_user }}'
+    group: '{{ buildbot_slave_user }}'
+
+- name: Copy Prepare Script
+  template:
+    src: 'gcc490.sh.j2'
+    dest: "{{ buildbot_slave_prepare_dir }}/gcc490.sh"
+    owner: '{{ buildbot_slave_user }}'
+    group: '{{ buildbot_slave_user }}'           
+    mode: 'u+x'
