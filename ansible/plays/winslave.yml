@@ -1,0 +1,13 @@
+- hosts: winbot-slaves
+
+
+  tasks:
+  - name: packages
+    win_chocolatey:
+      name: '{{ item }}'
+    with_items:
+    - 7zip
+
+
+
+  roles: []
