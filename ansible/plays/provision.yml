@@ -21,6 +21,10 @@
   - example-setups/gcc490
   - example-setups/qt530_gcc490
 
+- hosts: winbot-slaves
+  roles:
+  - hicknhack-software.buildbot/winslave/create
+
 - hosts: buildbot-master
   roles:
     - hicknhack-software.buildbot/master/nine/start

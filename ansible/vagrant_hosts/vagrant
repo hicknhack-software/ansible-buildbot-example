@@ -2,6 +2,16 @@
 buildbot-vm
 slave1-vm
 slave2-vm
+winslave1-vm
+
+[windows]
+winslave1-vm
+
+[windows:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
+ansible_ssh_port=5985
+ansible_connection=winrm
 
 [buildbot:children]
 vagrant
@@ -12,3 +22,6 @@ buildbot-vm
 [buildbot-slaves]
 slave1-vm
 slave2-vm
+
+[winbot-slaves]
+winslave1-vm
