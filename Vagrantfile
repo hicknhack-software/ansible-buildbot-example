@@ -47,6 +47,8 @@ Vagrant.configure('2') do |config|
     winslave.vm.box = "kensykora/windows_2012_r2_standard"
     winslave.vm.hostname = "winslave1-vm"
 
+    winslave.vm.network "forwarded_port", guest: 3389, host: 3383
+
     # make machine faster
     winslave.vm.provider "virtualbox" do |v|
       v.memory = 1024

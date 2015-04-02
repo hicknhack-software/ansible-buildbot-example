@@ -32,3 +32,7 @@
 - hosts: buildbot-slaves
   roles:
     - hicknhack-software.buildbot/slave/start
+
+- hosts: winbot-slaves
+  roles:
+  - hicknhack-software.buildbot/winslave/start    
