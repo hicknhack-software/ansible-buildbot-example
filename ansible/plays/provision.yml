@@ -11,6 +11,8 @@
     project_name: 'Twofold-Qt'
     project_repo_url: 'https://github.com/hicknhack-software/Twofold-Qt.git'
     project_reconfig_master: false
+  tags:
+  - buildmaster
 
 - hosts: buildbot-slaves
   sudo: yes
@@ -20,19 +22,29 @@
   - example-setups/qt530
   - example-setups/gcc490
   - example-setups/qt530_gcc490
+  tags:
+  - buildslave
 
 - hosts: winbot-slaves
   roles:
   - hicknhack-software.buildbot/winslave/create
+  tags:
+  - buildwinslave
 
 - hosts: buildbot-master
   roles:
     - hicknhack-software.buildbot/master/nine/start
+  tags:
+  - buildmaster
 
 - hosts: buildbot-slaves
   roles:
     - hicknhack-software.buildbot/slave/start
+  tags:
+  - buildslave
 
 - hosts: winbot-slaves
   roles:
-  - hicknhack-software.buildbot/winslave/start    
+  - hicknhack-software.buildbot/winslave/start
+  tags:
+  - buildwinslave

@@ -4,8 +4,8 @@
 Vagrant.configure('2') do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network "private_network", type: "dhcp" # use this for communications
-  config.vm.synced_folder ".", "/vagrant", :mount_options => ["fmode=666"]
-  config.ssh.insert_key = false
+  config.vm.synced_folder ".", "/vagrant", disabled: true # only ansible-vm mounts
+  config.ssh.insert_key = false # ease communication between machines
 
   # use vagrant-hostmanager plugin
   #   vagrant plugin install vagrant-hostmanager
@@ -22,18 +22,12 @@ Vagrant.configure('2') do |config|
 
     # forwarded ports
     buildbot.vm.network "forwarded_port", guest: 8020, host: 8083 # webserver
-
-    # disable shared folder
-    buildbot.vm.synced_folder ".", "/vagrant", disabled: true
   end
 
   # n buildbot slaves
   (1..2).each do |n|
     config.vm.define "slave#{n}-vm" do |slave|
       slave.vm.hostname = "slave#{n}-vm"
-
-      # disable shared folder
-      slave.vm.synced_folder ".", "/vagrant", disabled: true
 
       # make machine faster
       slave.vm.provider "virtualbox" do |v|
@@ -58,6 +52,7 @@ Vagrant.configure('2') do |config|
 
   config.vm.define "ansible-vm", primary: true do |ansible|
     ansible.vm.hostname = "ansible-vm"
+    ansible.vm.synced_folder ".", "/vagrant", :mount_options => ["fmode=666"]
     ansible.ssh.forward_agent = true
   end
 end
