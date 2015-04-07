@@ -28,6 +28,7 @@
 - hosts: winbot-slaves
   roles:
   - hicknhack-software.buildbot/winslave/create
+  - example-setups/qt532_mingw_492
   tags:
   - buildwinslave
 

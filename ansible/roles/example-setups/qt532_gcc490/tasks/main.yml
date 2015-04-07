@@ -7,8 +7,8 @@
 
 - name: Copy Prepare Script
   template:
-    src: 'qt530_gcc490.sh.j2'
-    dest: "{{ buildbot_slave_prepare_dir }}/qt530_gcc490.sh"
+    src: 'qt532_gcc490.sh.j2'
+    dest: "{{ buildbot_slave_prepare_dir }}/qt532_gcc490.sh"
     owner: '{{ buildbot_slave_user }}'
     group: '{{ buildbot_slave_user }}'
     mode: 'u+x'   
