@@ -78,4 +78,4 @@
   when: not qt54_base_binaries_stat_result.stat.exists
 
 - name: Create qt.conf
-  raw: "echo [Paths] > {{ qt.prefix }}/bin/qt.conf && echo Prefix=.. > {{ qt.prefix }}/bin/qt.conf"
+  raw: "echo [Paths] > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf && echo Prefix=.. > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf"
