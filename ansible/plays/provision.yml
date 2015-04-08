@@ -19,16 +19,16 @@
 
   roles:
   - hicknhack-software.buildbot/slave/create
-  - example-setups/qt530
+  - example-setups/qt532
   - example-setups/gcc490
-  - example-setups/qt530_gcc490
+  - example-setups/qt532_gcc490
   tags:
   - buildslave
 
 - hosts: winbot-slaves
   roles:
   - hicknhack-software.buildbot/winslave/create
-  - example-setups/qt532_mingw_492
+  - example-setups/qt54_mingw_491
   tags:
   - buildwinslave
 

@@ -1,0 +1,11 @@
+required_tools: ['7zip.commandline']
+
+qt:
+  url: http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt5_54/qt.54.win32_mingw491
+  archive: 5.4.0-1qt5_essentials
+  prefix: C:\Qt
+
+mingw:
+  url: http://download.qt.io/development_releases/prebuilt/mingw_32
+  archive: i686-4.9.1-release-posix-dwarf-rt_v3-rev2
+  prefix: C:\Mingw32\491
