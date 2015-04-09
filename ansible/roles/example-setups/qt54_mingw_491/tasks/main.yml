@@ -13,8 +13,9 @@
   win_chocolatey:
     name: "{{ item }}"
     register: packages_result
-    failed_when: "('install not successful' in packages_result.stdout)"    
+    failed_when: no
   with_items: required_tools
+  failed_when: no
 
 #Create Target Directory
 - name: Stat qt directory
@@ -78,4 +79,11 @@
   when: not qt54_base_binaries_stat_result.stat.exists
 
 - name: Create qt.conf
-  raw: "echo [Paths] > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf && echo Prefix=.. > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf"
+  raw: >
+    echo [Paths] > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf && 
+    echo Prefix=.. >> {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf
+
+- name: Create prepare script
+  raw: >
+    echo set PATH={{ qt.prefix }}\5.4\mingw491_32\bin;{{ mingw.prefix }}\mingw32\bin;%PATH%> {{ buildbot_winslave_basedir }}/scripts/qt54_mingw_491.bat &&
+    echo set QMAKESPEC=win32-g++>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat

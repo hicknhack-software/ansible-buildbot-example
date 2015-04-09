@@ -1,8 +1,12 @@
+buildbot_winslave_user: 'vagrant'
+buildbot_winslave_basedir: 'C:/buildslave'
+
 required_tools: ['7zip.commandline']
 
 qt:
   url: http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt5_54/qt.54.win32_mingw491
   archive: 5.4.0-1qt5_essentials
+  icu: 5.4.0-1icu_53_1_mingw_builds_4_9_1_posix_dwarf_32
   prefix: C:\Qt
 
 mingw:
