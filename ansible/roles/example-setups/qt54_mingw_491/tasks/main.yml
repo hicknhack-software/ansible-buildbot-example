@@ -65,8 +65,18 @@
 
 - name: Check if qt binaries already exist
   win_stat:
-    path: '{{ qt.prefix }}/5.4'
+    path: '{{ qt.prefix }}/5.4/mingw491_32'
   register: qt54_base_binaries_stat_result
+
+- name: Check if icu archive already exists
+  win_stat:
+    path: '{{ qt.prefix }}/{{qt.icu}}'
+  register: qt54_icu_archive_stat_result
+
+- name: Check if icu files already exist
+  win_stat:
+    path: '{{ qt.prefix }}/5.4/mingw491_32/bin/icudt53.dll'
+  register: qt54_icu_file_stat_result
 
 - name: Download Qt base archive
   win_get_url:
@@ -74,16 +84,28 @@
     dest: '{{ qt.prefix }}\{{ qt.archive }}.7z'
   when: not qt54_base_archive_stat_result.stat.exists
 
+- name: Download ICU archive
+  win_get_url:
+    url: '{{ qt.url }}/{{ qt.icu }}.7z'
+    dest: '{{ qt.prefix }}\{{ qt.icu }}.7z'
+  when: not qt54_icu_archive_stat_result.stat.exists
+
 - name: Extract Qt base sources
   raw: "cd {{ qt.prefix }} && 7za x {{ qt.prefix }}/{{ qt.archive }}.7z"
   when: not qt54_base_binaries_stat_result.stat.exists
 
+- name: Extract ICU files
+  raw: "cd {{ qt.prefix }} && 7za x {{ qt.prefix }}/{{ qt.icu }}.7z"
+  when: not qt54_icu_file_stat_result.stat.exists
+
 - name: Create qt.conf
   raw: >
-    echo [Paths] > {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf && 
-    echo Prefix=.. >> {{ qt.prefix }}/5.4/mingw491_32/bin/qt.conf
+    echo [Paths] > {{ qt.prefix }}\5.4\mingw491_32\bin\qt.conf && 
+    echo Prefix=.. >> {{ qt.prefix }}\5.4\mingw491_32\bin\qt.conf
 
 - name: Create prepare script
   raw: >
-    echo set PATH={{ qt.prefix }}\5.4\mingw491_32\bin;{{ mingw.prefix }}\mingw32\bin;%PATH%> {{ buildbot_winslave_basedir }}/scripts/qt54_mingw_491.bat &&
-    echo set QMAKESPEC=win32-g++>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat
+    echo @echo off> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
+    echo set PATH=%PATH%;{{ qt.prefix }}\5.4\mingw491_32\bin;{{ mingw.prefix }}\mingw32\bin>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
+    echo set QMAKESPEC=win32-g++>>{{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
+    echo set>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat

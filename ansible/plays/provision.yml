@@ -14,16 +14,16 @@
   tags:
   - buildmaster
 
-# - hosts: buildbot-slaves
-#   sudo: yes
+- hosts: buildbot-slaves
+  sudo: yes
 
-#   roles:
-#   - hicknhack-software.buildbot/slave/create
-#   - example-setups/qt532
-#   - example-setups/gcc490
-#   - example-setups/qt532_gcc490
-#   tags:
-#   - buildslave
+  roles:
+  - hicknhack-software.buildbot/slave/create
+  - example-setups/qt532
+  - example-setups/gcc490
+  - example-setups/qt532_gcc490
+  tags:
+  - buildslave
 
 - hosts: winbot-slaves
   roles:
@@ -38,11 +38,11 @@
   tags:
   - buildmaster
 
-# - hosts: buildbot-slaves
-#   roles:
-#     - hicknhack-software.buildbot/slave/start
-#   tags:
-#   - buildslave
+- hosts: buildbot-slaves
+  roles:
+    - hicknhack-software.buildbot/slave/start
+  tags:
+  - buildslave
 
 - hosts: winbot-slaves
   roles:
