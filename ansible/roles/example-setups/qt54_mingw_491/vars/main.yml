@@ -1,0 +1,4 @@
+---
+qt_base_archive: '{{ qt_base_dir }}\{{ qt_base_url | basename }}'
+qt_icu_archive: '{{ qt_icu_dir }}\{{ qt_icu_url | basename }}'
+qt_mingw_archive: '{{ qt_mingw_dir }}\{{ qt_mingw_url | basename }}'

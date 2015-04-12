@@ -1,111 +1,26 @@
 ---
-#required choco tools
-- name: Make sure Choco is installed
-  win_chocolatey:
-    name: "python2"
-    ignore_errors: yes
-    async: 20
-
-- name: Disable Script Confirmation
-  raw: 'choco feature enable -n allowGlobalConfirmation'
-
-- name: Install Required Tools
+- name: Packages
   win_chocolatey:
     name: "{{ item }}"
-    register: packages_result
-    failed_when: no
-  with_items: required_tools
-  failed_when: no
+    showlog: yes
+  register: qt_packages_result
+  failed_when: >
+    (qt_packages_result.msg is defined) and
+    ('0 package(s) failed.' not in qt_packages_result.msg)
+  with_items: choco_packages
 
-#Create Target Directory
-- name: Stat qt directory
-  win_stat:
-    path: '{{ qt.prefix }}'
-  register: qt54_temporary_dir_result
+- include: base.yml
+- include: icu.yml
+- include: mingw.yml
 
-- name: Create Temporary Directory
-  raw: 'mkdir {{ qt.prefix }}'
-  when: not qt54_temporary_dir_result.stat.exists
-
-- name: Stat mingw directory
-  win_stat:
-    path: '{{ mingw.prefix }}'
-  register: mingw491_temporary_dir_result
-
-- name: Create Temporary Directory
-  raw: 'mkdir {{ mingw.prefix }}'
-  when: not mingw491_temporary_dir_result.stat.exists
-
-#download and extract mingw
-- name: Check if mingw archive already exists
-  win_stat:
-    path: '{{ mingw.prefix }}/{{ mingw.archive }}.7z'
-  register: mingw_archive_stat_result
-
-- name: Check if mingw binaries already exist
-  win_stat:
-    path: '{{ mingw.prefix }}/mingw32'
-  register: mingw_binaries_stat_result  
-
-- name: Download mingw32-491
-  win_get_url:
-    url: '{{ mingw.url }}/{{ mingw.archive }}.7z'
-    dest: '{{ mingw.prefix }}\{{ mingw.archive }}.7z'
-  when: not mingw_archive_stat_result.stat.exists
-
-- name: Extract mingw32-491
-  raw: "cd {{ mingw.prefix }} && 7za x {{ mingw.prefix }}/{{ mingw.archive }}.7z"
-  when: not mingw_binaries_stat_result.stat.exists  
-
-#download and extract qt
-- name: Check if qt archive already exists
-  win_stat:
-    path: '{{ qt.prefix }}/{{ qt.archive }}.7z'
-  register: qt54_base_archive_stat_result
-
-- name: Check if qt binaries already exist
-  win_stat:
-    path: '{{ qt.prefix }}/5.4/mingw491_32'
-  register: qt54_base_binaries_stat_result
-
-- name: Check if icu archive already exists
-  win_stat:
-    path: '{{ qt.prefix }}/{{qt.icu}}'
-  register: qt54_icu_archive_stat_result
-
-- name: Check if icu files already exist
-  win_stat:
-    path: '{{ qt.prefix }}/5.4/mingw491_32/bin/icudt53.dll'
-  register: qt54_icu_file_stat_result
-
-- name: Download Qt base archive
-  win_get_url:
-    url: '{{ qt.url }}/{{ qt.archive }}.7z'
-    dest: '{{ qt.prefix }}\{{ qt.archive }}.7z'
-  when: not qt54_base_archive_stat_result.stat.exists
-
-- name: Download ICU archive
-  win_get_url:
-    url: '{{ qt.url }}/{{ qt.icu }}.7z'
-    dest: '{{ qt.prefix }}\{{ qt.icu }}.7z'
-  when: not qt54_icu_archive_stat_result.stat.exists
-
-- name: Extract Qt base sources
-  raw: "cd {{ qt.prefix }} && 7za x {{ qt.prefix }}/{{ qt.archive }}.7z"
-  when: not qt54_base_binaries_stat_result.stat.exists
-
-- name: Extract ICU files
-  raw: "cd {{ qt.prefix }} && 7za x {{ qt.prefix }}/{{ qt.icu }}.7z"
-  when: not qt54_icu_file_stat_result.stat.exists
-
-- name: Create qt.conf
+- name: Prepare script
   raw: >
-    echo [Paths] > {{ qt.prefix }}\5.4\mingw491_32\bin\qt.conf && 
-    echo Prefix=.. >> {{ qt.prefix }}\5.4\mingw491_32\bin\qt.conf
-
-- name: Create prepare script
-  raw: >
-    echo @echo off> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
-    echo set PATH=%PATH%;{{ qt.prefix }}\5.4\mingw491_32\bin;{{ mingw.prefix }}\mingw32\bin>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
-    echo set QMAKESPEC=win32-g++>>{{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat &&
-    echo set>> {{ buildbot_winslave_basedir }}\scripts\qt54_mingw_491.bat
+    if not exist "{{ qt_setup_script }}"
+      echo created &&
+      echo @echo off> "{{ qt_setup_script }}" &&
+      echo set PATH=%PATH%;{{ qt_base_bin_path }};{{ qt_mingw_bin_path }}>> "{{ qt_setup_script }}" &&
+      echo set QMAKESPEC=win32-g++>> "{{ qt_setup_script }}" &&
+      echo set>> "{{ qt_setup_script }}"
+  register: qt_prepare_script_result
+  changed_when: >
+    'created' in qt_prepare_script_result.stdout

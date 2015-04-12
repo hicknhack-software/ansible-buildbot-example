@@ -1,0 +1,23 @@
+---
+- name: icu | Directory
+  raw: >
+    if not exist "{{ qt_icu_dir }}" echo created && mkdir "{{ qt_icu_dir }}"
+  register: qt_icu_dir_result
+  changed_when: >
+    'created' in qt_icu_dir_result.stdout
+
+- name: icu | Stat
+  win_stat:
+    path: '{{ qt_icu_archive }}'
+  register: qt_icu_archive_result
+
+- name: icu | Download
+  win_get_url:
+    url: '{{ qt_icu_url }}'
+    dest: '{{ qt_icu_archive }}'
+  register: qt_icu_download_result
+  when: not qt_icu_archive_result.stat.exists
+
+- name: icu | Extract
+  raw: '7za x -o"{{ qt_dir }}" "{{ qt_icu_archive }}"'
+  when: qt_icu_download_result.changed
