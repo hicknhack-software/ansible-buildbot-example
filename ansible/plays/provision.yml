@@ -1,4 +1,5 @@
-- hosts: buildbot-master
+- name: setup master
+  hosts: buildbot-master
   sudo: yes
 
   roles:
@@ -14,7 +15,8 @@
   tags:
   - buildmaster
 
-- hosts: buildbot-slaves
+- name: setup slaves
+  hosts: buildbot-slaves
   sudo: yes
 
   roles:
@@ -25,26 +27,30 @@
   tags:
   - buildslave
 
-- hosts: winbot-slaves
+- name: setup winslaves
+  hosts: winbot-slaves
   roles:
   - hicknhack-software.buildbot/winslave/create
   - example-setups/qt54_mingw_491
   tags:
   - buildwinslave
 
-- hosts: buildbot-master
+- name: start master
+  hosts: buildbot-master
   roles:
     - hicknhack-software.buildbot/master/nine/start
   tags:
   - buildmaster
 
-- hosts: buildbot-slaves
+- name: start slaves
+  hosts: buildbot-slaves
   roles:
     - hicknhack-software.buildbot/slave/start
   tags:
   - buildslave
 
-- hosts: winbot-slaves
+- name: start winslaves
+  hosts: winbot-slaves
   roles:
   - hicknhack-software.buildbot/winslave/start
   tags:
