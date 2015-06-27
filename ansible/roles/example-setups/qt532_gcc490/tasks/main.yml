@@ -1,14 +1,15 @@
-- name: Folder
-  file:
-    path: '{{ buildbot_slave_prepare_dir }}'
-    state: directory
-    owner: '{{ buildbot_slave_user }}'
-    group: '{{ buildbot_slave_user }}'
-
 - name: Copy Prepare Script
   template:
     src: 'qt532_gcc490.sh.j2'
-    dest: "{{ buildbot_slave_prepare_dir }}/qt532_gcc490.sh"
+    dest: "{{ buildbot_slave_prepare_dir }}/{{ qt532_gcc490_tag }}.sh"
     owner: '{{ buildbot_slave_user }}'
     group: '{{ buildbot_slave_user }}'
-    mode: 'u+x'   
+    mode: 'u+x'
+  notify:
+  - reconfig buildslave
+
+- name: Store Facts
+  set_fact:
+    buildbot_slave_setups: "{{ buildbot_slave_setups }} + ['{{ qt532_gcc490_tag }}']"
+  tags:
+  - facts

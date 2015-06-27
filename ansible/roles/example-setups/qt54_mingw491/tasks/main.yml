@@ -1,0 +1,41 @@
+---
+- name: Packages
+  win_chocolatey:
+    name: "{{ item }}"
+    showlog: yes
+  register: qt_packages_result
+  failed_when: >
+    (qt_packages_result.msg is defined) and
+    ('0 package(s) failed.' not in qt_packages_result.msg)
+  with_items: choco_packages
+
+- include: base.yml
+- include: icu.yml
+- include: mingw.yml
+
+# - name: Prepare script
+#   raw: >
+#     if not exist "{{ qt_setup_script }}"
+#       echo created &&
+#       echo @echo off> "{{ qt_setup_script }}" &&
+#       echo set PATH=%PATH%;{{ qt_base_bin_path }};{{ qt_mingw_bin_path }}>> "{{ qt_setup_script }}" &&
+#       echo set QMAKESPEC=win32-g++>> "{{ qt_setup_script }}" &&
+#       echo set>> "{{ qt_setup_script }}"
+#   register: qt_prepare_script_result
+#   changed_when: >
+#     'created' in qt_prepare_script_result.stdout
+#   notify:
+#   - reconfig buildslave
+
+- name: Prepare script
+  win_template:
+    src: 'qt54_mingw491.bat.j2'
+    dest: "{{ qt_setup_script }}"
+  notify:
+  - reconfig buildslave
+
+- name: Store facts
+  set_fact:
+    buildbot_slave_setups: "{{ buildbot_slave_setups }} + ['{{ qt54_mingw491_tag }}']"
+  tags:
+  - facts

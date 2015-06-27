@@ -1,24 +1,17 @@
 - name: setup master
   hosts: buildbot-master
   sudo: yes
-
   roles:
-  - role: hicknhack-software.buildbot/master/nine/create
-    buildbot_master_www_port: 8083
-
+  - hicknhack-software.buildbot/master/install-nine
+  - hicknhack-software.buildbot/master/create
   - hicknhack-software.buildbot/master/inplace-config
-
-  - role: hicknhack-software.buildbot/project/add
-    project_name: 'Twofold-Qt'
-    project_repo_url: 'https://github.com/hicknhack-software/Twofold-Qt.git'
-    project_reconfig_master: false
+  - hicknhack-software.buildbot/project/add
   tags:
   - buildmaster
 
 - name: setup slaves
   hosts: buildbot-slaves
   sudo: yes
-
   roles:
   - hicknhack-software.buildbot/slave/create
   - example-setups/qt532
@@ -28,29 +21,34 @@
   - buildslave
 
 - name: setup winslaves
-  hosts: winbot-slaves
+  hosts: buildbot-winslaves
   roles:
   - hicknhack-software.buildbot/winslave/create
-  - example-setups/qt54_mingw_491
+  - example-setups/qt54_mingw491
   tags:
   - buildwinslave
 
 - name: start master
   hosts: buildbot-master
+  gather_facts: no
+  sudo: yes
   roles:
-    - hicknhack-software.buildbot/master/nine/start
+  - hicknhack-software.buildbot/master/start-inplace
   tags:
   - buildmaster
 
 - name: start slaves
   hosts: buildbot-slaves
+  gather_facts: no
+  sudo: yes
   roles:
-    - hicknhack-software.buildbot/slave/start
+  - hicknhack-software.buildbot/slave/start
   tags:
   - buildslave
 
 - name: start winslaves
-  hosts: winbot-slaves
+  hosts: buildbot-winslaves
+  gather_facts: no
   roles:
   - hicknhack-software.buildbot/winslave/start
   tags:

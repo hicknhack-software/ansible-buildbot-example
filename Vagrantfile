@@ -17,11 +17,11 @@ Vagrant.configure('2') do |config|
   end
 
   # buildbot master
-  config.vm.define "buildbot-vm" do |buildbot|
-    buildbot.vm.hostname = "buildbot-vm"
+  config.vm.define "master-vm" do |master|
+    master.vm.hostname = "master-vm"
 
     # forwarded ports
-    buildbot.vm.network "forwarded_port", guest: 8020, host: 8083 # webserver
+    master.vm.network "forwarded_port", guest: 8020, host: 8083 # webserver
   end
 
   # n buildbot slaves

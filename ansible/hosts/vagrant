@@ -1,14 +1,18 @@
 [vagrant]
-buildbot-vm
+master-vm
 slave1-vm
 slave2-vm
+winslave1-vm
 
 [buildbot:children]
 vagrant
 
 [buildbot-master]
-buildbot-vm
+master-vm
 
 [buildbot-slaves]
 slave1-vm
 slave2-vm
+
+[buildbot-winslaves]
+winslave1-vm

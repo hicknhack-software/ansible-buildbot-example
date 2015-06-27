@@ -1,4 +1,9 @@
 ---
-qt532_packages: 
+qt532_tag: 'qt532'
+
+qt532_apt_ppas:
+- 'ppa:beineri/opt-qt532-trusty'
+
+qt532_apt_packages:
 - qt53base
 - qt53script

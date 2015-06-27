@@ -1,6 +1,7 @@
 - name: Add PPA
   apt_repository:
-    repo: 'ppa:beineri/opt-qt532-trusty'
+    repo: "{{ item }}"
+  with_items: qt532_apt_ppas
 
 - name: install APT packages
   apt:
@@ -8,20 +9,20 @@
     update_cache: yes
     state: latest
     cache_valid_time: 86400
-  with_items: qt532_packages
-
-- name: Folder
-  file:
-    path: '{{ buildbot_slave_prepare_dir }}'
-    state: directory
-    owner: '{{ buildbot_slave_user }}'
-    group: '{{ buildbot_slave_user }}'
+  with_items: qt532_apt_packages
 
 - name: Copy Prepare Script
   template:
     src: 'qt532.sh.j2'
-    dest: "{{ buildbot_slave_prepare_dir }}/qt532.sh"
+    dest: "{{ buildbot_slave_prepare_dir }}/{{ qt532_tag }}.sh"
     owner: '{{ buildbot_slave_user }}'
-    group: '{{ buildbot_slave_user }}'    
+    group: '{{ buildbot_slave_user }}'
     mode: 'u+x'
+  notify:
+  - reconfig buildslave
 
+- name: Store Facts
+  set_fact:
+    buildbot_slave_setups: "{{ buildbot_slave_setups }} + ['{{ qt532_tag }}']"
+  tags:
+  - facts

@@ -1,4 +1,9 @@
 ---
-gcc490_packages: 
-- g++-4.9 
+gcc490_tag: 'gcc490'
+
+gcc490_apt_ppas:
+- 'ppa:ubuntu-toolchain-r/test'
+
+gcc490_apt_packages:
+- g++-4.9
 - gcc-4.9

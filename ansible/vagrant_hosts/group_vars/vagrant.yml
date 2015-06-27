@@ -1,2 +1,3 @@
 ---
 # hosts dependent application variables
+buildbot_master_host: 'master-vm'
