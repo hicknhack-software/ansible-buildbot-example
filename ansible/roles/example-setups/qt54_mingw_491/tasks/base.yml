@@ -19,7 +19,7 @@
   when: not qt_base_archive_result.stat.exists
 
 - name: base | Extract
-  raw: '7za x -o"{{ qt_dir }}" "{{ qt_base_archive }}"'
+  raw: '7za x -o"{{ qt_dir }}" "{{ qt_base_archive }}" >nul'
   when: qt_base_download_result.changed
 
 - name: base | Configure

@@ -19,5 +19,5 @@
   when: not qt_mingw_archive_result.stat.exists
 
 - name: mingw | Extract
-  raw: '7za x -o"{{ qt_mingw_dir }}" "{{ qt_mingw_archive }}"'
+  raw: '7za x -o"{{ qt_mingw_dir }}" "{{ qt_mingw_archive }}" >nul'
   when: qt_mingw_download_result.changed
