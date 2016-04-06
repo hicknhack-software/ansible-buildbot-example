@@ -1,1 +1,4 @@
+ansible/.roles/
+ansible/roles/
 .vagrant/
+.vagrant-file.rb
