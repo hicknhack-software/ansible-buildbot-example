@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require_relative '.vagrant-file' if File.exists?('.vagrant-file.rb')
+
 Vagrant.configure('2') do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network "private_network", type: "dhcp" # use this for communications
@@ -54,5 +56,6 @@ Vagrant.configure('2') do |config|
     ansible.vm.hostname = "ansible-vm"
     ansible.vm.synced_folder ".", "/vagrant", :mount_options => ["fmode=666"]
     ansible.ssh.forward_agent = true
+    customize_ansible_vm(ansible) if defined? customize_ansible_vm
   end
 end
