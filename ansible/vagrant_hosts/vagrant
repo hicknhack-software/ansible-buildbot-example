@@ -1,17 +1,18 @@
 [vagrant]
 master-vm
-slave1-vm
-slave2-vm
-winslave1-vm
+worker1-vm
+worker2-vm
+winworker1-vm
 
 [windows]
-winslave1-vm
+winworker1-vm
 
 [windows:vars]
-ansible_ssh_user=vagrant
-ansible_ssh_pass=vagrant
-ansible_ssh_port=5985
+ansible_user=vagrant
+ansible_password=vagrant
+ansible_port=5985
 ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
 
 [buildbot:children]
 vagrant
@@ -19,9 +20,9 @@ vagrant
 [buildbot-master]
 master-vm
 
-[buildbot-slaves]
-slave1-vm
-slave2-vm
+[buildbot-workers]
+worker1-vm
+worker2-vm
 
-[buildbot-winslaves]
-winslave1-vm
+[buildbot-winworkers]
+winworker1-vm

@@ -1,23 +1,16 @@
 ---
 - name: mingw | Directory
-  raw: >
-    if not exist "{{ qt_mingw_dir }}" echo created && mkdir "{{ qt_mingw_dir }}"
-  register: qt_mingw_dir_result
-  changed_when: >
-    'created' in qt_mingw_dir_result.stdout
-
-- name: mingw | Stat archive
-  win_stat:
-    path: '{{ qt_mingw_archive }}'
-  register: qt_mingw_archive_result
+  win_file:
+    path: "{{ qt_mingw_dir }}"
+    state: directory
 
 - name: mingw | Download
   win_get_url:
     url: '{{ qt_mingw_url }}'
     dest: '{{ qt_mingw_archive }}'
+    force: no
   register: qt_mingw_download_result
-  when: not qt_mingw_archive_result.stat.exists
 
 - name: mingw | Extract
-  raw: '7za x -o"{{ qt_mingw_dir }}" "{{ qt_mingw_archive }}" >nul'
+  raw: '7za x -aoa -o"{{ qt_mingw_dir }}" "{{ qt_mingw_archive }}"'
   when: qt_mingw_download_result.changed
