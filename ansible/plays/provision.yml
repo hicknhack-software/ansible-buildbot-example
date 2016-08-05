@@ -23,6 +23,24 @@
 
 - name: setup winworkers
   hosts: buildbot-winworkers
+  pre_tasks:
+  - name: Fetch Path
+    raw: "Write-Host $env:Path"
+    register: buidbot_winworker_path
+    changed_when: no
+
+  - name: Exclude OpenSSH from Path
+    win_environment:
+      name: "Path"
+      level: "machine"
+      value: "{{ buidbot_winworker_path.stdout_lines[0] | regex_replace(';[^;]*\\\\OpenSSH\\\\[^;]*(;?)', '\\1') }}"
+
+  - name: Unset CYGWIN
+    win_environment:
+      name: "CYGWIN"
+      level: "machine"
+      state: absent
+
   roles:
   - hicknhack-software.buildbot/winworker/create
   - example-setups/qt54_mingw491
