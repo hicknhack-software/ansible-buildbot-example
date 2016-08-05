@@ -23,30 +23,30 @@ Vagrant.configure('2') do |config|
     master.vm.hostname = "master-vm"
 
     # forwarded ports
-    master.vm.network "forwarded_port", guest: 8020, host: 8083 # webserver
+    master.vm.network "forwarded_port", guest: 8083, host: 8083 # webserver
   end
 
-  # n buildbot slaves
+  # n buildbot workers
   (1..2).each do |n|
-    config.vm.define "slave#{n}-vm" do |slave|
-      slave.vm.hostname = "slave#{n}-vm"
+    config.vm.define "worker#{n}-vm" do |worker|
+      worker.vm.hostname = "worker#{n}-vm"
 
       # make machine faster
-      slave.vm.provider "virtualbox" do |v|
+      worker.vm.provider "virtualbox" do |v|
         v.memory = 1024
         v.cpus = 2
       end
     end
   end
 
-  config.vm.define "winslave1-vm" do |winslave|
-    winslave.vm.box = "kensykora/windows_2012_r2_standard"
-    winslave.vm.hostname = "winslave1-vm"
+  config.vm.define "winworker1-vm" do |winworker|
+    winworker.vm.box = "kensykora/windows_2012_r2_standard"
+    winworker.vm.hostname = "winworker1-vm"
 
-    winslave.vm.network "forwarded_port", guest: 3389, host: 3383
+    winworker.vm.network :forwarded_port, guest: 3389, host: 33389, auto_correct: true
 
     # make machine faster
-    winslave.vm.provider "virtualbox" do |v|
+    winworker.vm.provider "virtualbox" do |v|
       v.memory = 1024
       v.cpus = 2
     end

@@ -1,5 +1,5 @@
-buildbot_winslave_user: 'vagrant'
-buildbot_winslave_scripts: 'C:/buildslave/scripts'
+buildbot_winworker_user: 'vagrant'
+buildbot_winworker_scripts: 'C:/build/scripts'
 
 choco_packages:
 - 7zip.commandline

@@ -1,33 +1,21 @@
 ---
 - name: base | Directory
-  raw: >
-    if not exist "{{ qt_base_dir }}" echo created && mkdir "{{ qt_base_dir }}"
-  register: qt_base_dir_result
-  changed_when: >
-    'created' in qt_base_dir_result.stdout
-
-- name: base | Stat
-  win_stat:
-    path: '{{ qt_base_archive }}'
-  register: qt_base_archive_result
+  win_file:
+    path: "{{ qt_base_dir }}"
+    state: directory
 
 - name: base | Download
   win_get_url:
     url: '{{ qt_base_url }}'
     dest: '{{ qt_base_archive }}'
+    force: no
   register: qt_base_download_result
-  when: not qt_base_archive_result.stat.exists
 
 - name: base | Extract
-  raw: '7za x -o"{{ qt_dir }}" "{{ qt_base_archive }}" >nul'
+  raw: '7za x -aoa -o"{{ qt_dir }}" "{{ qt_base_archive }}"'
   when: qt_base_download_result.changed
 
 - name: base | Configure
-  raw: >
-    if not exist "{{ qt_base_conf }}"
-      echo created &&
-      echo [Paths] > {{ qt_base_conf }} &&
-      echo Prefix=.. >> {{ qt_base_conf }}
-  register: qt_base_conf_result
-  changed_when: >
-    'created' in qt_base_conf_result.stdout
+  win_template:
+    dest: "{{ qt_base_conf }}"
+    src: "qt.conf.j2"

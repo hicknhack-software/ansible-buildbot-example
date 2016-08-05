@@ -1,55 +1,57 @@
 - name: setup master
   hosts: buildbot-master
-  sudo: yes
+  become: yes
   roles:
   - hicknhack-software.buildbot/master/install-nine
   - hicknhack-software.buildbot/master/create
   - hicknhack-software.buildbot/master/inplace-config
   - hicknhack-software.buildbot/project/add
   tags:
-  - buildmaster
+  - master
 
-- name: setup slaves
-  hosts: buildbot-slaves
-  sudo: yes
+- name: setup workers
+  hosts: buildbot-workers
+  become: yes
   roles:
-  - hicknhack-software.buildbot/slave/create
-  - example-setups/qt532
-  - example-setups/gcc490
-  - example-setups/qt532_gcc490
+  - hicknhack-software.buildbot/worker/create
+  - example-setups/qt53
+  - example-setups/gcc49
+  - example-setups/qt53_gcc49
+  - hicknhack-software.buildbot/worker/configure
   tags:
-  - buildslave
+  - worker
 
-- name: setup winslaves
-  hosts: buildbot-winslaves
+- name: setup winworkers
+  hosts: buildbot-winworkers
   roles:
-  - hicknhack-software.buildbot/winslave/create
+  - hicknhack-software.buildbot/winworker/create
   - example-setups/qt54_mingw491
+  - hicknhack-software.buildbot/winworker/configure
   tags:
-  - buildwinslave
+  - winworker
 
 - name: start master
   hosts: buildbot-master
   gather_facts: no
-  sudo: yes
+  become: yes
   roles:
   - hicknhack-software.buildbot/master/start-inplace
   tags:
-  - buildmaster
+  - master
 
-- name: start slaves
-  hosts: buildbot-slaves
+- name: start workers
+  hosts: buildbot-workers
   gather_facts: no
-  sudo: yes
+  become: yes
   roles:
-  - hicknhack-software.buildbot/slave/start
+  - hicknhack-software.buildbot/worker/start
   tags:
-  - buildslave
+  - worker
 
-- name: start winslaves
-  hosts: buildbot-winslaves
+- name: start winworkers
+  hosts: buildbot-winworkers
   gather_facts: no
   roles:
-  - hicknhack-software.buildbot/winslave/start
+  - hicknhack-software.buildbot/winworker/start
   tags:
-  - buildwinslave
+  - winworker
