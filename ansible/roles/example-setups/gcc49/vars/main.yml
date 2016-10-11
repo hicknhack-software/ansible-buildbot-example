@@ -1,0 +1,9 @@
+---
+gcc49_tag: 'gcc49'
+
+gcc49_apt_ppas:
+- 'ppa:ubuntu-toolchain-r/test'
+
+gcc49_apt_packages:
+- g++-4.9
+- gcc-4.9

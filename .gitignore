@@ -1,4 +1,4 @@
 ansible/.roles/
-ansible/roles/
 .vagrant/
 .vagrant-file.rb
+ansible/roles/hicknhack-software.buildbot
