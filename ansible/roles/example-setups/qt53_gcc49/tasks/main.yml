@@ -1,0 +1,12 @@
+- name: Copy Prepare Script
+  template:
+    src: 'qt53_gcc49.sh.j2'
+    dest: "{{ buildbot_worker_prepare_dir }}/{{ qt53_gcc49_tag }}.sh"
+    owner: '{{ buildbot_worker_user }}'
+    group: '{{ buildbot_worker_user }}'
+    mode: 'u+x'
+
+- name: Store Facts
+  set_fact:
+    buildbot_worker_setups: "{{ buildbot_worker_setups }} + ['{{ qt53_gcc49_tag }}']"
+  tags: [always]

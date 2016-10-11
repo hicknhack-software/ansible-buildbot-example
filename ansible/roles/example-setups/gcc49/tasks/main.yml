@@ -1,0 +1,25 @@
+- name: Add PPA
+  apt_repository:
+    repo: "{{ item }}"
+  with_items: "{{ gcc49_apt_ppas }}"
+
+- name: Install APT packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+    cache_valid_time: 86400
+  with_items: "{{ gcc49_apt_packages }}"
+
+- name: Copy Prepare Script
+  template:
+    src: 'gcc49.sh.j2'
+    dest: "{{ buildbot_worker_prepare_dir }}/{{ gcc49_tag }}.sh"
+    owner: '{{ buildbot_worker_user }}'
+    group: '{{ buildbot_worker_user }}'
+    mode: 'u+x'
+
+- name: Store Facts
+  set_fact:
+    buildbot_worker_setups: "{{ buildbot_worker_setups }} + ['{{ gcc49_tag }}']"
+  tags: [always]
