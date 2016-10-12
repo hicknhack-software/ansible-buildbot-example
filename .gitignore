@@ -2,3 +2,4 @@ ansible/.roles/
 .vagrant/
 .vagrant-file.rb
 ansible/roles/hicknhack-software.buildbot
+ansible/plays/provision.retry
