@@ -7,7 +7,7 @@ choco_packages:
 qt_dir: C:\Qt
 qt_base_dir: '{{ qt_dir }}'
 qt_base_url: http://download.qt.io/official_releases/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe
-qt_base_bin_path: '{{ qt_base_dir }}\4.8\mingw491_32\bin'
+qt_base_bin_path: '{{ qt_base_dir }}\4.8.7\bin'
 qt_base_conf: '{{ qt_base_bin_path }}\qt.conf'
 
 qt_mingw_dir: '{{ qt_dir }}\Mingw32_482'
