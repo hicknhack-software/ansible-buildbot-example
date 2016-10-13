@@ -5,8 +5,9 @@
   - hicknhack-software.buildbot/master/install-nine
   - hicknhack-software.buildbot/master/create
   - hicknhack-software.buildbot/master/inplace-config
-  - hicknhack-software.buildbot/project/add
-  tags:
+  - role: hicknhack-software.buildbot/project/add
+    project_name: 'Twofold-Qt'
+    project_repo_url: 'https://github.com/hicknhack-software/Twofold-Qt.git'
   - master
 
 - name: setup workers

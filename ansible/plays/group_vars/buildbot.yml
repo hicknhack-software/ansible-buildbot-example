@@ -3,6 +3,3 @@
 
 buildbot_master_www_port: 8083
 buildbot_master_url: "http://localhost:{{ buildbot_master_www_port }}/"
-
-project_name: 'Twofold-Qt'
-project_repo_url: 'https://github.com/hicknhack-software/Twofold-Qt.git'
