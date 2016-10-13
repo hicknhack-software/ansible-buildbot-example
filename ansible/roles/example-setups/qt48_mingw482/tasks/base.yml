@@ -1,0 +1,21 @@
+---
+- name: base | Directory
+  win_file:
+    path: "{{ qt_base_dir }}"
+    state: directory
+
+- name: base | Download
+  win_get_url:
+    url: '{{ qt_base_url }}'
+    dest: '{{ qt_base_archive }}'
+    force: no
+  register: qt_base_download_result
+
+- name: base | Install
+  raw: '{{ qt_base_archive }} /S'
+  when: qt_base_download_result.changed
+
+- name: base | Configure
+  win_template:
+    dest: "{{ qt_base_conf }}"
+    src: "qt.conf.j2"

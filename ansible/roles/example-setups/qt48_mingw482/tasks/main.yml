@@ -1,0 +1,24 @@
+---
+- name: Packages
+  win_chocolatey:
+    name: "{{ item }}"
+    showlog: yes
+  register: qt_packages_result
+  failed_when: >
+    (qt_packages_result.msg is defined) and
+    ('0 package(s) failed.' not in qt_packages_result.msg)
+  with_items: "{{ choco_packages }}"
+
+- include: base.yml
+#- include: icu.yml
+- include: mingw.yml
+
+- name: Prepare script
+  win_template:
+    src: 'qt48_mingw482.bat.j2'
+    dest: "{{ qt_setup_script }}"
+
+- name: Store facts
+  set_fact:
+    buildbot_worker_setups: "{{ buildbot_worker_setups }} + ['{{ qt48_mingw482_tag }}']"
+  tags: [always]

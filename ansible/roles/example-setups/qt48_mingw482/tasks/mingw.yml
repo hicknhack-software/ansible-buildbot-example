@@ -1,0 +1,16 @@
+---
+- name: mingw | Directory
+  win_file:
+    path: "{{ qt_mingw_dir }}"
+    state: directory
+
+- name: mingw | Download
+  win_get_url:
+    url: '{{ qt_mingw_url }}'
+    dest: '{{ qt_mingw_archive }}'
+    force: no
+  register: qt_mingw_download_result
+
+- name: mingw | Extract
+  raw: '7za x -aoa -o"{{ qt_mingw_dir }}" "{{ qt_mingw_archive }}"'
+  when: qt_mingw_download_result.changed
