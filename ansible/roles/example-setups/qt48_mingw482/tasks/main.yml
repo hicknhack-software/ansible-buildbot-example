@@ -10,7 +10,6 @@
   with_items: "{{ choco_packages }}"
 
 - include: base.yml
-#- include: icu.yml
 - include: mingw.yml
 
 - name: Prepare script
