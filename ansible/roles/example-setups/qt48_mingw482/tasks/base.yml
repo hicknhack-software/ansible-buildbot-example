@@ -12,6 +12,7 @@
   register: qt_base_download_result
 
 - name: base | Install
+# see http://nsis.sourceforge.net/Docs/Chapter4.html#silent
   raw: '{{ qt_base_archive }} /S'
   when: qt_base_download_result.changed
 
