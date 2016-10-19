@@ -1,0 +1,9 @@
+---
+choco_packages:
+- 7zip.commandline
+- windows-sdk-7.1
+
+progress_dir: C:\AnsibleProgress
+download_dir: C:\Downloads
+
+win_sdk_sp1_url: https://download.microsoft.com/download/7/5/0/75040801-126C-4591-BCE4-4CD1FD1499AA/VC-Compiler-KB2519277.exe

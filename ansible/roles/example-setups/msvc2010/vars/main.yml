@@ -1,0 +1,6 @@
+---
+msvc2010_tag: 'msvc2010'
+
+win_sdk_sp1_archive: '{{ download_dir }}\{{ win_sdk_sp1_url | basename }}'
+win_sdk_sp1_amd64_msi: '{{download_dir}}\vc_stdamd64.msi'
+win_sdk_sp1_x86_msi: '{{download_dir}}\vc_stdx86.msi'

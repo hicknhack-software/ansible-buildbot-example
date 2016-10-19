@@ -1,0 +1,54 @@
+- name: Ensure Progress Directory is present
+  win_file:
+    path: "{{ progress_dir }}"
+    state: directory
+
+- name: Ensure Download Directory is present
+  win_file:
+    path: "{{ download_dir }}"
+    state: directory
+
+- name: Install Packages
+  win_chocolatey:
+    name: "{{ item }}"
+    showlog: yes
+  register: win_sdk_package_result
+  failed_when: >
+    (win_sdk_package_result.results is defined) and
+    win_sdk_package_result.results.failed
+  with_items: "{{ choco_packages }}"
+
+- name: Download Win SDK SP1
+  win_get_url:
+    url: "{{ win_sdk_sp1_url }}"
+    dest: "{{ win_sdk_sp1_archive }}"
+  when: >
+    (not win_sdk_package_result.results[0].failed) and
+    win_sdk_package_result.results[0].changed
+
+- name: Extract Win SDK SP1
+  raw: '7za x -aoa -o"{{ download_dir }}" "{{ win_sdk_sp1_archive }}"'
+  when: win_sdk_sp1_download_result.changed
+  # changed_when: >
+  #   ( win_sdk_sp1_extract_result.msg is defined ) and
+  #   ( 'Everything is Ok' not in win_sdk_sp1_extract_result.msg.stdout_lines )
+  register: win_sdk_sp1_extract_result
+
+- debug: msg="{{ win_sdk_sp1_extract_result }}"
+
+- name: Install Win SDK SP1 AMD64
+  win_msi:
+    path: "{{ win_sdk_sp1_amd64_msi }}"
+    wait: yes
+  #when: win_sdk_sp1_extract_result.changed
+
+- name: Install Win SDK SP1 x86
+  win_msi:
+    path: "{{ win_sdk_sp1_x86_msi }}"
+    wait: yes
+  #when: win_sdk_sp1_extract_result.changed
+
+# - name: Store Facts
+#   set_fact:
+#     buildbot_worker_setups: "{{ buildbot_worker_setups }} + ['{{ msvc2010_tag }}']"
+#   tags: [always]
