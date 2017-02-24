@@ -2,7 +2,7 @@
   hosts: buildbot-master
   become: yes
   roles:
-  - hicknhack-software.buildbot/master/install-nine
+  - hicknhack-software.buildbot/master/install
   - hicknhack-software.buildbot/master/create
   - hicknhack-software.buildbot/master/inplace-config
   - role: hicknhack-software.buildbot/project/add
