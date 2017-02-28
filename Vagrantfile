@@ -4,7 +4,7 @@
 require_relative '.vagrant-file' if File.exists?('.vagrant-file.rb')
 
 Vagrant.configure('2') do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "bento/ubuntu-16.04"
   config.vm.network "private_network", type: "dhcp" # use this for communications
   config.vm.synced_folder ".", "/vagrant", disabled: true # only ansible-vm mounts
   config.ssh.insert_key = false # ease communication between machines
