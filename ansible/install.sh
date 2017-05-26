@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #   Version of Ansible that is used
-ANSIBLE_VERSION=${ANSIBLE_VERSION:=2.2.0.0 1}
-ANSIBLE_GIT_BRANCH=v2.2.0.0-1
+ANSIBLE_VERSION=${ANSIBLE_VERSION:=2.3.0.0 1}
+ANSIBLE_GIT_BRANCH=v2.3.0.0-1
 
 source $PROJECT_FOLDER/$VAGRANT_ANSIBLE_REMOTE/ansible/git-install.sh
 
