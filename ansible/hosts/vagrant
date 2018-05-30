@@ -16,3 +16,11 @@ worker2-vm
 
 [buildbot-winworkers]
 winworker1-vm
+
+[buildbot-winworkers:vars]
+ansible_user=vagrant
+ansible_password=vagrant
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+
