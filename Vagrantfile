@@ -40,7 +40,8 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "winworker1-vm" do |winworker|
-    winworker.vm.box = "kensykora/windows_2012_r2_standard"
+    #winworker.vm.box = "kensykora/windows_2012_r2_standard"
+    winworker.vm.box = "opentable/win-2012r2-standard-amd64-nocm"
     winworker.vm.hostname = "winworker1-vm"
 
     winworker.vm.network :forwarded_port, guest: 3389, host: 33389, auto_correct: true
